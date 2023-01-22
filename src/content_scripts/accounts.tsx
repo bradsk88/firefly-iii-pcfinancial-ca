@@ -99,7 +99,4 @@ runOnContentChange(
     getButtonDestination,
 )
 
-runOnContentChange(
-    accountsUrl,
-    enableAutoRun,
-)
+runOnContentChange(accountsUrl, enableAutoRun)
