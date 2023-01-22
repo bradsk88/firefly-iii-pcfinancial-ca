@@ -46,8 +46,6 @@ async function doScrape(isAutoRun: boolean): Promise<TransactionScrape> {
 const buttonId = 'firefly-iii-export-transactions-button';
 
 function addButton() {
-    // TODO: This is where you add a "scrape" button to the page where the
-    //  account's transactions are listed.
     const button = document.createElement("button");
     button.textContent = "Export Transactions"
     button.addEventListener("click", async () => doScrape(false), false);
