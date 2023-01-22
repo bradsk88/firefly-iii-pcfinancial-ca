@@ -84,16 +84,22 @@ function enableAutoRun() {
     });
 }
 
-runOnURLMatch(
-    '/en/my/dashboard',
-    () => !!document.getElementById(buttonId),
-    () => {
-        pageAlreadyScraped = false;
-        addButton();
-    },
-);
+const accountsUrl = '/en/my/dashboard';
+
+runOnURLMatch(accountsUrl, () => pageAlreadyScraped = false);
 
 runOnContentChange(
-    '/en/my/dashboard',
+    accountsUrl,
+    () => {
+        if (!!document.getElementById(buttonId)) {
+            return;
+        }
+        addButton();
+    },
+    getButtonDestination,
+)
+
+runOnContentChange(
+    accountsUrl,
     enableAutoRun,
 )
