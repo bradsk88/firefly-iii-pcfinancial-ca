@@ -30,6 +30,10 @@ async function doScrape(isAutoRun: boolean): Promise<TransactionScrape> {
         },
         () => {
         });
+    await chrome.runtime.sendMessage({
+        action: "complete_auto_run_state",
+        state: AutoRunState.Transactions,
+    })
     return {
         pageAccount: {
             accountNumber: acct.attributes.accountNumber!,
@@ -58,9 +62,8 @@ function enableAutoRun() {
         if (state === AutoRunState.Transactions) {
             doScrape(true)
                 .then((id: TransactionScrape) => chrome.runtime.sendMessage({
-                    action: "increment_auto_run_tx_account",
-                    lastAccountNameCompleted: id.pageAccount.name,
-                }, () => {
+                    action: "complete_auto_run_state",
+                    state: AutoRunState.Transactions,
                 }));
         }
     });

@@ -156,6 +156,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         } else if (message.state === AutoRunState.Transactions) {
             progressAutoRun(AutoRunState.Done);
         }
+        sendResponse();
     } else if (message.action === "check_base_url") {
         getApiBaseUrl().then(url => sendResponse(url));
     } else {

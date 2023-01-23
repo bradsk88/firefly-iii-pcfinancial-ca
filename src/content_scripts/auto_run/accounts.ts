@@ -35,9 +35,5 @@ export function openAccountForAutoRun() {
                 navigateToAccount(accountElement);
                 return;
             }
-            chrome.runtime.sendMessage({
-                action: "complete_auto_run_state",
-                state: AutoRunState.Transactions,
-            });
         });
 }

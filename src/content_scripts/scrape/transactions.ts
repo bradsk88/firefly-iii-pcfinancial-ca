@@ -36,7 +36,10 @@ function getRowAmount(r: Element): number {
     if (posAmount) {
         return priceFromString(posAmount!.textContent!);
     }
-    return -priceFromString(negAmount!.textContent!);
+    if (negAmount) {
+        return -priceFromString(negAmount!.textContent!);
+    }
+    throw new Error("Page is not ready for scraping")
 }
 
 function getRowDesc(r: Element): string {
@@ -51,6 +54,10 @@ function getRowDesc(r: Element): string {
 export function scrapeTransactionsFromPage(
     pageAccount: AccountRead,
 ): TransactionStore[] {
+    if (!document.querySelector("div.table-container table")) {
+        throw new Error("Page is not ready for scraping")
+    }
+
     const rows = Array.from(document.querySelectorAll('div.table-container table tbody tr').values());
     return rows.map(r => {
         let tType = TransactionTypeProperty.Withdrawal;
