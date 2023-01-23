@@ -5,9 +5,6 @@ import {PageAccount} from "../common/accounts";
 import {runOnURLMatch} from "../common/buttons";
 import {runOnContentChange} from "../common/autorun";
 
-// TODO: You will need to update manifest.json so this file will be loaded on
-//  the correct URL.
-
 interface TransactionScrape {
     pageAccount: PageAccount;
     pageTransactions: TransactionStore[];
@@ -50,7 +47,6 @@ function addButton() {
     button.id = buttonId;
     button.textContent = "Export Transactions"
     button.addEventListener("click", async () => doScrape(false), false);
-    // TODO: Try to steal styling from the page to make this look good :)
     button.classList.add("some", "classes", "from", "the", "page");
     getButtonDestination().append(button);
 }
@@ -70,7 +66,7 @@ function enableAutoRun() {
     });
 }
 
-const txPage = 'accounts/main/details'; // TODO: Set this to your transactions page URL
+const txPage = '';
 
 runOnURLMatch(txPage, () => pageAlreadyScraped = false);
 
@@ -88,4 +84,9 @@ runOnContentChange(
 )
 
 
-runOnContentChange(txPage, enableAutoRun)
+runOnContentChange(txPage, () => {
+    if (!window.location.href.includes("en/my/transactions")) {
+        return;
+    }
+    enableAutoRun();
+})

@@ -12,7 +12,7 @@ export async function progressAutoRun(state = AutoRunState.Accounts) {
         if (!!openedWindow) {
             const id = openedWindow.id;
             openedWindow = undefined;
-            return chrome.tabs.remove(id!);
+            // return chrome.tabs.remove(id!);
         }
         return;
     }
