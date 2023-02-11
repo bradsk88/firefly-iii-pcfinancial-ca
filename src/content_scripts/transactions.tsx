@@ -133,7 +133,7 @@ runOnContentChange(
     txPage,
     () => {
         if (!!document.getElementById(buttonId)) {
-            document.getElementById(buttonId)!.remove();
+            return;
         }
         addButton();
     },
