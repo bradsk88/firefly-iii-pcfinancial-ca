@@ -22,6 +22,12 @@ export async function getCurrentPageAccount(
     return accounts.find(a => a.attributes.accountNumber === number)!;
 }
 
+export function isPageReadyForScraping(): boolean {
+    // TODO: Some banks load content slowly. Find an element on the page that
+    //  is only present once the page is fully loaded.
+    return !!document.querySelector('app-account-transactions')
+}
+
 export function getRowElements(): Element[] {
     if (!document.querySelector("div.table-container table")) {
         throw new Error("Page is not ready for scraping")
@@ -45,7 +51,7 @@ function isRowLoading(r: Element): boolean {
     return !posAmount && !negAmount;
 }
 
-export function getRowAmount(r: Element): number {
+export function getRowAmount(r: Element, pageAccount: AccountRead): number {
     if (isRowLoading(r)) {
         throw new Error("Page is not ready for scraping")
     }

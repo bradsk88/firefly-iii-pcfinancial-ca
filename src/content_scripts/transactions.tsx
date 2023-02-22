@@ -5,7 +5,7 @@ import {
     getCurrentPageAccount,
     getRowAmount,
     getRowDate, getRowDesc,
-    getRowElements
+    getRowElements, isPageReadyForScraping
 } from "./scrape/transactions";
 import {PageAccount} from "../common/accounts";
 import {runOnURLMatch} from "../common/buttons";
@@ -13,6 +13,7 @@ import {runOnContentChange} from "../common/autorun";
 import {AccountRead} from "firefly-iii-typescript-sdk-fetch/dist/models/AccountRead";
 import {isSingleAccountBank} from "../extensionid";
 import {backToAccountsPage} from "./auto_run/transactions";
+import {debugLog} from "./auto_run/debug";
 
 interface TransactionScrape {
     pageAccount: PageAccount;
@@ -33,7 +34,7 @@ export function scrapeTransactionsFromPage(
         let srcId: string | undefined = pageAccount.id;
         let destId: string | undefined = undefined;
 
-        const amount = getRowAmount(r);
+        const amount = getRowAmount(r, pageAccount);
         if (amount < 0) {
             tType = TransactionTypeProperty.Deposit;
             srcId = undefined;
@@ -101,9 +102,14 @@ function addButton() {
 }
 
 function enableAutoRun() {
+    if (!isPageReadyForScraping()) {
+        debugLog("Page is not ready for scraping")
+        return;
+    }
     chrome.runtime.sendMessage({
         action: "get_auto_run_state",
     }).then(state => {
+        debugLog("Got state", state)
         if (state === AutoRunState.Transactions) {
             doScrape(true)
                 .then((id: TransactionScrape) => {
@@ -141,9 +147,9 @@ runOnContentChange(
 )
 
 
-runOnContentChange(txPage, () => {
-    if (!window.location.href.includes("en/my/transactions")) {
-        return;
-    }
-    enableAutoRun();
-})
+runOnContentChange(
+    txPage,
+    enableAutoRun,
+    undefined,
+    'txAutoRun',
+);
