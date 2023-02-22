@@ -1,5 +1,5 @@
 {
-  "name": "My Firefly III OAuth2 Extension",
+  "name": "PC Financial MasterCard -> Firefly III",
   "version": "1.0",
   "description": "Description goes here",
   "permissions": [
@@ -28,5 +28,8 @@
   "action": {
     "default_popup": "options.html"
   },
-  "manifest_version": 3
+  "manifest_version": 3,
+  "icons": {
+    "128": "logo-128.png"
+  }
 }

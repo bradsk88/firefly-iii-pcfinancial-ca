@@ -23,9 +23,7 @@ export async function getCurrentPageAccount(
 }
 
 export function isPageReadyForScraping(): boolean {
-    // TODO: Some banks load content slowly. Find an element on the page that
-    //  is only present once the page is fully loaded.
-    return !!document.querySelector('app-account-transactions')
+    return true;
 }
 
 export function getRowElements(): Element[] {
